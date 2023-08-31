@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <title>Youtube Video Downloader</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: rgb(0, 0, 0);
+            color: rgb(21, 21, 21);
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            min-height: 50vh;
+
+
+        }
+
+        h1 {
+            font-weight: 500;
+            letter-spacing: 0.07vw;
+            margin-top: 1.5vw;
+
+        }
+
+        header p {
+            font-size: 15px;
+            margin-top: 5px;
+        }
+
+        .first-section {
+            width: 500px;
+            background-color: rgb(124, 124, 124);
+            border-radius: 15px;
+            padding: 20px 25px 15px;
+        }
+
+        form {
+            margin: 20px 0 27px;
+
+
+        }
+
+        form input {
+            width: 100%;
+            height: 60px;
+            outline: none;
+            font-size: 19px;
+            padding: 0;
+            border-radius: 5px;
+            border: 1px solid #292929;
+            text-align: center;
+
+        }
+
+        form button {
+
+            width: 100%;
+            border: none;
+            outline: none;
+            color: #fff;
+            padding: 15px 0;
+            margin-top: 20px;
+            border-radius: 5px;
+            background: #ff7c7c;
+            cursor: pointer;
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        form input:valid~button {
+            background: #620404;
+            pointer-events: auto;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <center>
+        <div class="first-section">
+            <header>
+
+                <h1>File Downloader</h1>
+                <p>Paste your url to download</p>
+            </header>
+
+            <form action="#">
+                <input type="url" placeholder="Paste url here" required>
+                <button>Download</button>
+            </form>
+
+        </div>
+
+    </center>
+</body>
+<script>
+    const fileInput = document.querySelector("input"),
+        downloadBtn = document.querySelector("button");
+    downloadBtn.addEventListener("click", e => {
+        e.preventDefault();
+        downloadBtn.innerText = 'Downloading file...';
+        fetchFile(fileInput.value);
+    });
+    function fetchFile(url) {
+        fetch(url).then(res => res.blob()).then(file => {
+            let tempURL = URL.createObjectURL(file);
+            let aTag = document.createElement("a");
+            aTag.href = tempUrl;
+            aTag.download = url.replace(/^.*[\\\/]/, '');
+            document.body.appendChild(aTag);
+            aTag.click();
+            aTag.remove();
+            URL.revokeObjectURL(tempUrl);
+            downloadBtn.innerText = 'Download file';
+        }).catch(() => {
+            downloadBtn.innerText = 'Download File';
+            alert('Failed to download');
+        });
+
+    }
+</script>
+
+</html>
+<!--Followed tutorial from Youtube @codingnepal-->
